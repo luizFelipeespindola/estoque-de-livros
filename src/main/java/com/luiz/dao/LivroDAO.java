@@ -65,6 +65,35 @@ public class LivroDAO {
         return livros;
     }
 
+    public Livro buscarPorCodigo(String codigo) throws SQLException{
+
+        String sql = "SELECT titulo, autor, codigo, quantidade FROM livros WHERE codigo = ? ";
+
+        try(Connection conexao = Conexao.conectar()) {
+
+            try(PreparedStatement comando = conexao.prepareStatement(sql)){
+
+                comando.setString(1, codigo);
+
+                try(ResultSet resultado = comando.executeQuery()) {
+
+                    if(resultado.next()){
+
+                        Livro livro = new Livro();
+
+                        livro.setTitulo(resultado.getString("titulo"));
+                        livro.setAutor(resultado.getString("autor"));
+                        livro.setCodigo(resultado.getString("codigo"));
+                        livro.setQuantidade(resultado.getInt("quantidade"));
+
+                        return livro;
+                    }
+                }
+            }
+        }
+            return null;
+    }
+
 
 
 }

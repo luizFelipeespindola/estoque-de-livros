@@ -3,9 +3,7 @@ package com.luiz;
 import com.luiz.dao.LivroDAO;
 import com.luiz.entities.Livro;
 
-
 import java.sql.SQLException;
-import java.util.List;
 
 public class Main {
 
@@ -14,19 +12,19 @@ public class Main {
         try {
             LivroDAO livroDAO = new LivroDAO();
 
-            List<Livro> livros = livroDAO.listar();
+            Livro livro = livroDAO.buscarPorCodigo("001L");
 
-            for (Livro livro : livros) {
-                System.out.println("\nTítulo: " + livro.getTitulo());
+            if (livro != null) {
+                System.out.println("Titulo: " + livro.getTitulo());
                 System.out.println("Autor: " + livro.getAutor());
                 System.out.println("Codigo: " + livro.getCodigo());
                 System.out.println("Quantidade: " + livro.getQuantidade());
-                System.out.println("----------------------");
+            } else {
+                System.out.println("Livro nao encontrado.");
             }
 
         } catch (SQLException erroSQL) {
-            System.out.println("Erro ao listar livros: " + erroSQL.getMessage());
+            System.out.println("Erro ao buscar livro: " + erroSQL.getMessage());
         }
-
     }
 }
