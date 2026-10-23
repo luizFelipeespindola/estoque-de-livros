@@ -5,31 +5,27 @@ import com.luiz.entities.Livro;
 
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        try{
-
-            Livro livro = new Livro();
+        try {
             LivroDAO livroDAO = new LivroDAO();
 
-            livro.setTitulo("Java para Iniciantes");
-            livro.setAutor("Paulo Silva");
-            livro.setCodigo("001L");
-            livro.setQuantidade(1);
+            List<Livro> livros = livroDAO.listar();
 
-            livroDAO.cadastrar(livro);
+            for (Livro livro : livros) {
+                System.out.println("\nTítulo: " + livro.getTitulo());
+                System.out.println("Autor: " + livro.getAutor());
+                System.out.println("Codigo: " + livro.getCodigo());
+                System.out.println("Quantidade: " + livro.getQuantidade());
+                System.out.println("----------------------");
+            }
 
-
-            System.out.println("Livro Cadastrado");
-
-        }catch (IllegalArgumentException erro){
-            System.out.println("Erro de validacao " + erro.getMessage());
-
-        }catch (SQLException erroSQL){
-            System.out.println("Erro ao cadastrar o livro "+ erroSQL.getMessage());
+        } catch (SQLException erroSQL) {
+            System.out.println("Erro ao listar livros: " + erroSQL.getMessage());
         }
 
     }

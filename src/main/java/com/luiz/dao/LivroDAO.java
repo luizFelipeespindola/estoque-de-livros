@@ -5,7 +5,10 @@ import com.luiz.entities.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LivroDAO {
 
@@ -30,4 +33,38 @@ public class LivroDAO {
         }
 
     }
+
+    public List<Livro> listar() throws SQLException{
+
+        List<Livro> livros = new ArrayList<>();
+
+        String sql = "SELECT titulo, autor, codigo, quantidade FROM livros";
+
+        try(Connection conexao = Conexao.conectar()){
+
+            try(PreparedStatement comando = conexao.prepareStatement(sql)){
+
+                try(ResultSet resultado = comando.executeQuery()) {
+
+                    while (resultado.next()) {
+
+                        Livro livro = new Livro();
+
+                        livro.setTitulo(resultado.getString("titulo"));
+                        livro.setAutor(resultado.getString("autor"));
+                        livro.setCodigo(resultado.getString("codigo"));
+                        livro.setQuantidade(resultado.getInt("quantidade"));
+
+                        livros.add(livro);
+                    }
+
+                }
+            }
+        }
+
+        return livros;
+    }
+
+
+
 }
